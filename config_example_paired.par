@@ -1,0 +1,13 @@
+
+# Some of key parameters
+INPUT_FILE_PAIRED_1         sample_data/mm_c15_paired_1f.fastq
+INPUT_FILE_PAIRED_2         sample_data/mm_c15_paired_2r.fastq
+OUTPUT_DIRECTORY            trareco_paired
+OUTPUT_FILE_PREFIX          trareco_paired
+
+SYSTEM_MEMORY_SIZE_GB       8       # Memory Size of your computer, Default value: 16(GB), Minimum 8(GB) required
+NOMINAL_READ_LENGTH         76      # Nominal read length
+NORM_DIST_THRESHOLD         0.05    # Normalized distance threshold (per-base), ex: 0.04 -> 4 out of 100 bases 
+MIN_OVERLAP_DEPTH           44
+MIN_TRANSCRIPT_LENGTH       200     # Minimum transcript length
+
