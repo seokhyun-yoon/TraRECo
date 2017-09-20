@@ -57,6 +57,7 @@ cfg.input_file_2 = -1;
 cfg.output_dir = '';
 cfg.output_prefix = '';
 cfg.memory_size_gb = -1;
+cfg.min_rlen_percent = -1;
 
 fname = fname_par;
 fp = fopen( fname, 'r' );
@@ -270,6 +271,10 @@ else
                if strcmp(str(1:length(kword)), kword)
                    cfg.proc_unit_size = sscanf(str(length(kword)+1:end), '%d');
                end
+               kword = 'MIN_TLEN_PERCENT_WRT_MAX';
+               if strcmp(str(1:length(kword)), kword)
+                   cfg.min_rlen_percent = sscanf(str(length(kword)+1:end), '%d');
+               end
            end
        end
     end
@@ -435,6 +440,9 @@ else
     if cfg.max_num_csets < 0
         cfg.max_num_csets = cfg_default.max_num_csets;
     end
+    if cfg.min_rlen_percent < 0
+        cfg.min_rlen_percent = cfg_default.min_rlen_percent;
+    end
 end
 end
 
@@ -446,7 +454,7 @@ function cfg = get_default_values( rd_len, dist_th )
     cfg.contig_ttl = 300000;
     cfg.max_pipeline = 60000;  
     cfg.num_pipeline = 60000;   
-    cfg.proc_unit_size = 20000;
+    cfg.proc_unit_size = 15000;
     cfg.max_contig_length = 3000;
     if exist('dist_th', 'var')
         cfg.norm_dist_threshold = dist_th;
@@ -456,27 +464,27 @@ function cfg = get_default_values( rd_len, dist_th )
     cfg.min_cd_ungrown = 2.1;
     cfg.max_reads_to_load_m = 0;
     cfg.nominal_read_length = rd_len;
-    cfg.min_overlap_depth = 52; 
+    cfg.min_overlap_depth = 44; 
     cfg.max_overlap_depth = cfg.nominal_read_length;
     cfg.min_read_length = round(cfg.nominal_read_length*0.6);
     cfg.num_nmer_div = 8;
     cfg.b_nmer_map_s = 0;
     cfg.bool_read_filter = 1;
     cfg.bool_ss_ind = 0;
-    cfg.min_cvg_depth_js = 1.2;
+    cfg.min_cvg_depth_js = 1.4;
     cfg.min_cntg_length_js = round(cfg.nominal_read_length*0.8);
     cfg.safe_overlap_threshold = 50;
-    cfg.connection_threshold = 32; 
+    cfg.connection_threshold = 24; 
     cfg.connection_threshold_short = 24; 
     cfg.short_seg_threshold = round(cfg.nominal_read_length);
     cfg.max_n_cntg_per_group = 40;
     cfg.num_nmer_div_js = 4;
     cfg.min_tail_length = min( max(22, round(cfg.connection_threshold/2) ), cfg.connection_threshold_short );
     cfg.cntg_sel_threshold = 2;
-    cfg.junction_backoff = 20;
+    cfg.junction_backoff = 12;
     cfg.min_cvg_depth = 0;
     cfg.min_seg_length = cfg.nominal_read_length - cfg.connection_threshold;
-    cfg.max_num_paths = 300;
+    cfg.max_num_paths = 150;
     cfg.max_num_isoforms = 200;
     cfg.b_tail_suppress = 1;
     cfg.b_split_merged = 0;
@@ -486,5 +494,6 @@ function cfg = get_default_values( rd_len, dist_th )
     cfg.min_tr_length = 200;
     cfg.max_num_csets = 1;
     cfg.memory_size_gb = 16;
+    cfg.min_rlen_percent = 60;
 end
 

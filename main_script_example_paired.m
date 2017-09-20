@@ -16,7 +16,7 @@ config_file = 'config_example_paired.par';  % Assembly Config. file
 Min_Tr_CvgDepth = [0 1 2 4 6 8];    % Read Coverage depth threshold used for Transcript selection 
 
 %% TraRECo main
-Out_file_prefix = trareco_v063( config_file, Min_Tr_CvgDepth );
+Out_file_prefix = trareco_v064( config_file, Min_Tr_CvgDepth );
 
 %% Run BLAST-N 
 % This requires BLAST Software installed on your computer

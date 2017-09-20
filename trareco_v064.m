@@ -1,9 +1,9 @@
 
-function out_file_name = trareco_v063( config_file, Min_tr_abundance )
+function out_file_name = trareco_v064( config_file, Min_tr_abundance )
 
 %% TraRECo main
 fprintf('+-----------------------------------+\n');
-fprintf('|        TraRECo version 0.63       |\n');
+fprintf('|        TraRECo version 0.64       |\n');
 fprintf('+-----------------------------------+\n');
 trareco_cg( config_file );
 trareco_js( config_file );  

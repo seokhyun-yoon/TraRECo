@@ -1601,7 +1601,7 @@ if b_tail_suppress > 0
                     for k = 1:1:n_paths
                         path_idx = k;
                         if ~isempty( path_mat(path_idx,:) )
-                            if trc_len(path_idx) >= max( mx_trc_len*0.6, cfg.min_tr_length )
+                            if trc_len(path_idx) >= max( mx_trc_len*(cfg.min_rlen_percent/100), cfg.min_tr_length )
                                 b_sv( path_mat(path_idx,1:path_len(path_idx)) ) = 1;
                                 % for m = 1:1:path_len(path_idx)
                                 %     b_sv( path_mat(path_idx,m) ) = 1;

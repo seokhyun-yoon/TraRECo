@@ -1,5 +1,5 @@
 
-function fname_out = trareco_js( config_file, soption ) 
+function fname_out = trareco_js_v060c( config_file, soption ) 
 
 if exist('soption', 'var') == 0
     soption = 0;
@@ -61,7 +61,7 @@ end
 d_scale_ov = 1;
 d_scale_cn = 1;
 % Blk_len_mul = 3;
-Blk_len = round(cfg.nominal_read_length*1.5)*4; %200;
+Blk_len = round(cfg.nominal_read_length*1.5)*2; %200;
 Nx_disp = 100;
 Num_proc_sim = cfg.proc_unit_size;
 cfg_val = [cfg.norm_dist_threshold cfg.connection_threshold_short round(cfg.max_overlap_depth*2) cfg.connection_threshold cfg.bool_ss_ind];
@@ -78,6 +78,7 @@ if soption == 0
     fname_out = sprintf('%s', out_file_prefix );
     fname_log = sprintf('%s.log', fname_out );
     fp_log = fopen( fname_log, 'a' );
+
 
     if fp_log ~= -1
         fprintf(fp_log, '\n%s\n', dstr);
@@ -1528,8 +1529,8 @@ end
                 % b_cmplt = zeros(2,1);
                 % [seg_seq_Nmer, seg_len_Nmer] = sub_NumSeq2NmerSeq( seg(dividend_idx).seq, num_N_mer );
 
-                j_cnt_divisor = zeros(n_seg,2);
-                j_idx_divisor = zeros(100,n_seg,2);
+                j_cnt_divisor = zeros(n_seg,2, 'single');
+                j_idx_divisor = zeros(100,n_seg,2, 'single');
 
                 for mn = 1:1:n_blk
 
@@ -1994,6 +1995,8 @@ end
                     fprintf(repmat('\b', 1, Nchar));
                     Nchar = fprintf( '%s %d/%d/%d ', str_hdr, n_seg, n, N_junctions ); 
                 % end
+                clear j_cnt_divisor;
+                clear j_idx_divisor;
             end
         end % if seg(dividend_idx).len    
     end % for n = 1:1:n_seg
@@ -2078,8 +2081,8 @@ for lp = 1:1:N_Loops
                 % b_cmplt = zeros(2,1);
                 [seg_seq_Nmer, seg_len_Nmer] = sub_NumSeq2NmerSeq( seg(dividend_idx).seq, num_N_mer );
 
-                j_cnt_divisor = zeros(n_seg,2);
-                j_idx_divisor = zeros(100,n_seg,2);
+                j_cnt_divisor = zeros(n_seg,2, 'single');
+                j_idx_divisor = zeros(100,n_seg,2, 'single');
 
                 for mn = 1:1:n_blk
 
@@ -2548,13 +2551,13 @@ for lp = 1:1:N_Loops
                     fprintf(repmat('\b', 1, Nchar));
                     Nchar = fprintf( '%s %d/%d/%d (%d/%d)', str_hdr, n, n_seg, round(n_seg_sel), lp, N_Loops ); 
                 % end
+                clear j_cnt_divisor;
+                clear j_idx_divisor;
             end
         end % if seg(dividend_idx).len    
     end % for n = 1:1:n_seg
 end % for lp
 end
-clear j_cnt_divisor;
-clear j_idx_divisor;
 clear Seg_Nmer_map;
 clear Seg_Nmer_seq;
 seg_connection_mode_lst = seg_connection_mode_lst(1:seg_connection_mode_cnt, :); 
@@ -2768,6 +2771,7 @@ Nrt_wrong = 0;
 Nrt_gs = 0;
 
 % fpx = fopen('test.txt', 'wt' );
+
 kmod = round(Nrt/6);
 for k = 1:1:Nrt
     if read_cntg_map(k,1) > 0 || read_cntg_map(k,2) > 0
@@ -3113,11 +3117,11 @@ for n = 1:1:N_groups
         break;
     end
     if Group_Size(gid_tmp) == 1
-        fprintf('\n    ERROR: Group_Size(gid_tmp) == 1' );
+        fprintf('\n      ERROR: Group_Size(gid_tmp) == 1' );
     else
         seg_idx = find( group_id == gid_tmp );
         if length( seg_idx ) ~= Group_Size(gid_tmp)
-            fprintf('\n    ERROR:  length( seg_idx ) ~= Group_Size(gid_tmp)' );
+            fprintf('\n      ERROR:  length( seg_idx ) ~= Group_Size(gid_tmp)' );
         end
         seg_connection_mode_selected = zeros(Group_Size(gid_tmp), Group_Size(gid_tmp), 'int8' ); 
         % ncnt = 0;
@@ -3128,12 +3132,12 @@ for n = 1:1:N_groups
                 gidx_map( sci(1) ) = cidx;
             else
                 if gidx_map( sci(1) ) ~= cidx
-                    fprintf('\n    ERROR: gidx_map( sci(1) ) ~= cidx');
+                    fprintf('\n      ERROR: gidx_map( sci(1) ) ~= cidx');
                 end
             end
         end
         if sum( gidx_map( seg_idx ) == 0 ) > 0
-            fprintf('\n    WARNING: sum( gidx_map( seg_idx ) == 0 ) > 0 ');
+            fprintf('\n      WARNING: sum( gidx_map == 0 ) > 0 ');
             b_seg_mapped = zeros( Group_Size(gid_tmp), 1 );
             for m = 1:1:Group_Size(gid_tmp)
                 if gidx_map( seg_idx(m) ) > 0 && gidx_map( seg_idx(m) ) <= Group_Size(gid_tmp)
@@ -3155,6 +3159,7 @@ for n = 1:1:N_groups
                     end
                 end
             end
+            Nchar = 0;
         end
         for m = 1:1:n_cnt 
             sci = seg_connection_mode_lst( sorted_gidx(idx_ptr+m-1), : );
@@ -4475,7 +4480,6 @@ function seq_int8 = f03_seq_est( seg_cvg )
     [axx, mxi] = max( seg_cvg );
     seq_int8 = int8( mxi-1 );
 end
-
 % function cvg = f03_set_cvg( seg_seq )
 %     seg_len = length( seg_seq );
 %     cvg = uint16( zeros(4,seg_len) );
@@ -4484,6 +4488,7 @@ end
 %     end
 % end
 % 
+
 % function tvec = f04_check_loop( n_seg_selected, seg_connection_mat_selected )
 %     % b_tmp = 0;
 %     Tmat = eye(n_seg_selected);
@@ -4588,7 +4593,6 @@ function [tail_len_f, tail_len_b] = f04_check_polyA_tail_v04a( seq, Min_tail_len
         end
     end
 end
-
 
 %% f04_strand_correction( sc_ref, mode )
 function [dir, sc_k] = f04_strand_correction( sc_ref, mode )
