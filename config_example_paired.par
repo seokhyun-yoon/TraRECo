@@ -9,5 +9,5 @@ SYSTEM_MEMORY_SIZE_GB       8       # Memory Size of your computer, Default valu
 NOMINAL_READ_LENGTH         76      # Nominal read length
 NORM_DIST_THRESHOLD         0.05    # Normalized distance threshold (per-base), ex: 0.04 -> 4 out of 100 bases 
 MIN_OVERLAP_DEPTH           44
-MIN_TRANSCRIPT_LENGTH       200     # Minimum transcript length
+MIN_TRANSCRIPT_LENGTH       200     # Minimum transcript length, default value: 200
 

@@ -24,7 +24,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     p_param = mxGetPr(prhs[2]);
     norm_dist_threshold = p_param[0];
     min_overlap = (int)p_param[1];
-    max_overlap = (int)(p_param[2]*1.5);
+    max_overlap = (int)(p_param[2]);
     ss_ind = (int)p_param[4];
     mode = (int)mxGetScalar(prhs[3]);
     

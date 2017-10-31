@@ -7,9 +7,9 @@ fp = fopen( fname_blst, 'rt' );
 
 for k = 1:1:length(abn_th)
     if isempty( ext )
-        fname_tmp = sprintf('%s_MinCvgDepth_%3.1f.fasta', trascriptome_in_fasta, round(abn_th(k)) );
+        fname_tmp = sprintf('%s_MinCvgDepth_%d.fasta', trascriptome_in_fasta, round(abn_th(k)) );
     else
-        fname_tmp = sprintf('%s_MinCvgDepth_%3.1f.fasta', trascriptome_in_fasta, round(abn_th(k)) );
+        fname_tmp = sprintf('%s_MinCvgDepth_%d.fasta', trascriptome_in_fasta, round(abn_th(k)) );
     end
     fpwl(k) = fopen( fname_tmp, 'wt' );
 end
@@ -74,7 +74,7 @@ fprintf('%d \n', n_cnt );
 
 fprintf('Selected Transcriptome (from %d candidates) written to \n', n_cnt );
 for k = 1:1:length(abn_th)
-    fname_tmp = sprintf('%s_MinCvgDepth_%3.1f.fasta', trascriptome_in_fasta, round(abn_th(k)) );
+    fname_tmp = sprintf('%s_MinCvgDepth_%d.fasta', trascriptome_in_fasta, round(abn_th(k)) );
     fprintf('   Abundance >= %f -> %s  (%d transcripts) \n', ...
         abn_th(k), fname_tmp, n_rds(k) ); 
 end

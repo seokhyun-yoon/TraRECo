@@ -58,6 +58,7 @@ cfg.output_dir = '';
 cfg.output_prefix = '';
 cfg.memory_size_gb = -1;
 cfg.min_rlen_percent = -1;
+cfg.mean_frag_length = -1;
 
 fname = fname_par;
 fp = fopen( fname, 'r' );
@@ -275,6 +276,10 @@ else
                if strcmp(str(1:length(kword)), kword)
                    cfg.min_rlen_percent = sscanf(str(length(kword)+1:end), '%d');
                end
+               kword = 'MEAN_FRAGMENT_LENGTH';
+               if strcmp(str(1:length(kword)), kword)
+                   cfg.mean_frag_length = sscanf(str(length(kword)+1:end), '%d');
+               end
            end
        end
     end
@@ -443,6 +448,13 @@ else
     if cfg.min_rlen_percent < 0
         cfg.min_rlen_percent = cfg_default.min_rlen_percent;
     end
+    if cfg.mean_frag_length < 0
+        if cfg.read_mode == 0
+            cfg.mean_frag_length = cfg.nominal_read_length;
+        else
+            cfg.mean_frag_length = cfg.nominal_read_length*3;
+        end
+    end
 end
 end
 
@@ -459,7 +471,7 @@ function cfg = get_default_values( rd_len, dist_th )
     if exist('dist_th', 'var')
         cfg.norm_dist_threshold = dist_th;
     else
-        cfg.norm_dist_threshold = 0.05;
+        cfg.norm_dist_threshold = 0.06;
     end
     cfg.min_cd_ungrown = 2.1;
     cfg.max_reads_to_load_m = 0;
@@ -471,7 +483,7 @@ function cfg = get_default_values( rd_len, dist_th )
     cfg.b_nmer_map_s = 0;
     cfg.bool_read_filter = 1;
     cfg.bool_ss_ind = 0;
-    cfg.min_cvg_depth_js = 1.4;
+    cfg.min_cvg_depth_js = 1.8;
     cfg.min_cntg_length_js = round(cfg.nominal_read_length*0.8);
     cfg.safe_overlap_threshold = 50;
     cfg.connection_threshold = 24; 
@@ -489,11 +501,11 @@ function cfg = get_default_values( rd_len, dist_th )
     cfg.b_tail_suppress = 1;
     cfg.b_split_merged = 0;
     cfg.mse_margin_percent = 3;
-    cfg.lasso_n_loops = 1000;
-    cfg.lasso_step_size = 1/cfg.lasso_n_loops;
+    cfg.lasso_n_loops = 400;
+    cfg.lasso_step_size = 0.5/cfg.lasso_n_loops;
     cfg.min_tr_length = 200;
     cfg.max_num_csets = 1;
     cfg.memory_size_gb = 16;
-    cfg.min_rlen_percent = 60;
+    cfg.min_rlen_percent = 40;
 end
 
